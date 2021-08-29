@@ -1,0 +1,49 @@
+{
+    "name": "touhidurabir/laravel-model-hashid",
+    "description": "A laravel package to generate model hashid based on model id column.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Touhidur Rahman",
+            "email": "abircse06@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Touhidurabir\\ModelHashid\\": "src/"
+        },
+        "files": [
+            "src/helpers/helper.php"
+        ]
+    },
+    "autoload-dev" : {
+        "psr-4" : {
+            "Touhidurabir\\ModelHashid\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "orchestra/testbench": "^6.20",
+        "illuminate/support": "^8.55",
+        "illuminate/container": "^8.55",
+        "illuminate/database": "^8.55",
+        "illuminate/events": "^8.55",
+        "brianium/paratest": "^6.3",
+        "nunomaduro/collision": "^5.8"
+    },
+    "require": {
+        "php": ">=7.3",
+        "hashids/hashids": "^4.1"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Touhidurabir\\ModelHashid\\ModelHashidServiceProvider"
+            ],
+            "aliases": {
+                "ModelUuid": "Touhidurabir\\ModelHashid\\Facades\\ModelHashid"
+            }
+        }
+    }
+}
