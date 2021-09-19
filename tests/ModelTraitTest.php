@@ -170,4 +170,21 @@ class ModelTraitTest extends TestCase {
         $this->assertNotNull($profile->getHashId());
     }
 
+
+    /**
+     * @test
+     */
+    public function the_specific_model_hash_id_disabled_generation_can_be_enabled() {
+
+        User::disbaleHashIdGeneration();
+
+        $user = User::create(['email' => 'mail1@m.test', 'password' => '123']);
+        $this->assertNull($user->getHashId());
+
+        User::disbaleHashIdGeneration(false);
+
+        $user = User::create(['email' => 'mail2@m.test', 'password' => '123']);
+        $this->assertNotNull($user->getHashId());
+    }
+
 }

@@ -140,12 +140,12 @@ trait IdHashable {
 
 		$self->initializeIdHashable();
 
-        if ( static::$disbaleHashIdGeneration ) {
-
-            return;
-        }
-
 		static::created(function($model) use ($self) {
+
+            if ( $self::$disbaleHashIdGeneration ) {
+
+                return;
+            }
             
             $hashIdFieldName  = $self->getHashIdFieldName();
 
