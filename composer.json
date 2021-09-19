@@ -26,7 +26,6 @@
         "phpunit/phpunit": "^9.5",
         "orchestra/testbench": "^6.20",
         "illuminate/support": "^8.55",
-        "illuminate/container": "^8.55",
         "illuminate/database": "^8.55",
         "illuminate/events": "^8.55",
         "brianium/paratest": "^6.3",
@@ -34,7 +33,10 @@
     },
     "require": {
         "php": ">=7.3",
-        "hashids/hashids": "^4.1"
+        "hashids/hashids": "^4.1",
+        "illuminate/bus": "^8.61",
+        "illuminate/container": "^8.55",
+        "illuminate/contracts": "^8.61"
     },
     "extra": {
         "laravel": {

@@ -12,6 +12,14 @@ trait IdHashable {
     use CanSaveQuietly;
 
     /**
+     * Should disbale hashId generation for this model
+     *
+     * @var bool
+     */
+    public static $disbaleHashIdGeneration = false;
+
+
+    /**
      * The hasher instance
      *
      * @var object<\Touhidurabir\ModelHashid\Hasher\Hasher>
@@ -25,6 +33,32 @@ trait IdHashable {
      * @var string
      */
 	public $hashIdFieldName;
+
+
+    /**
+     * Disable/Enable hash id generation for model
+     *
+     * @param  bool $state
+     * @return void
+     */
+    public static function disbaleHashIdGeneration(bool $state = true) {
+
+        static::$disbaleHashIdGeneration = $state;
+    }
+
+
+    /**
+     * Can model have hashid associated with it
+     *
+     * @param  string $table
+     * @param  string $column
+     * 
+     * @return bool
+     */
+    public function canHaveHashId(string $table, string $column) {
+
+        return Schema::hasColumn($table, $column);
+    }
 
 
     /**
@@ -61,7 +95,7 @@ trait IdHashable {
             return $this->id;
         }
 
-        return $this->attributes[$this->getHashIdFieldName()];
+        return $this->attributes[$this->getHashIdFieldName()] ?? null;
     }
 
 
@@ -106,17 +140,24 @@ trait IdHashable {
 
 		$self->initializeIdHashable();
 
+        if ( static::$disbaleHashIdGeneration ) {
+
+            return;
+        }
+
 		static::created(function($model) use ($self) {
             
             $hashIdFieldName  = $self->getHashIdFieldName();
-            
-            if ( Schema::hasColumn($model->getTable(), $hashIdFieldName) ) {
-				
-				$model->{$hashIdFieldName}
-					?: $model->{$hashIdFieldName} = $self->generateHashId($model->getId());
 
-                method_exists($self, 'saveQuietly') ? $model->saveQuietly() : $model->saveModelQuietly();
-			}
+            if ( ! $self->canHaveHashId($model->getTable(), $hashIdFieldName) ) {
+
+                return;
+            }
+            
+            $model->{$hashIdFieldName}
+                ?: $model->{$hashIdFieldName} = $self->generateHashId($model->getId());
+
+            method_exists($self, 'saveQuietly') ? $model->saveQuietly() : $model->saveModelQuietly();
         });
 	}
 
@@ -161,7 +202,7 @@ trait IdHashable {
      *
      * @return void
      */
-	protected function initializeIdHashable() {
+	public function initializeIdHashable() {
 
         $hashColumn = null;
 

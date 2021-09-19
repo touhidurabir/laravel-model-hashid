@@ -142,4 +142,32 @@ class ModelTraitTest extends TestCase {
         $this->assertTrue(User::byHashId([$user1->hash_id, $user2->hash_id])->get() instanceof Collection);
     }
 
+
+    /**
+     * @test
+     */
+    public function the_specific_model_hash_id_generation_can_be_disabled_globally() {
+
+        User::disbaleHashIdGeneration();
+
+        $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
+        
+        $this->assertNull($user->getHashId());
+    }
+
+
+    /**
+     * @test
+     */
+    public function the_specific_model_hash_id_generation_disabling_will_not_impact_other_model() {
+
+        User::disbaleHashIdGeneration();
+
+        $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
+        $this->assertNull($user->getHashId());
+
+        $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
+        $this->assertNotNull($profile->getHashId());
+    }
+
 }
