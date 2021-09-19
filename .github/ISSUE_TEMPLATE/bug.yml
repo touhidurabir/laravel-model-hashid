@@ -29,7 +29,7 @@ body:
     id: php
     attributes:
       label: PHP Version
-      description: "Please provide the full PHP version that is powering Tinkerwell."
+      description: "Please provide the full PHP version that beign used."
       placeholder: "PHP 8.0.7, built: Jun  4 2021 01:50:04"
     validations:
       required: true
