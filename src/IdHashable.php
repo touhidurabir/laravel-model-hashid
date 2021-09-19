@@ -50,14 +50,14 @@ trait IdHashable {
     /**
      * Can model have hashid associated with it
      *
-     * @param  string $table
-     * @param  string $column
+     * @param  mixed<string|null> $table
+     * @param  mixed<string|null> $column
      * 
      * @return bool
      */
-    public function canHaveHashId(string $table, string $column) {
+    public function canHaveHashId(string $table = null, string $column = null) {
 
-        return Schema::hasColumn($table, $column);
+        return Schema::hasColumn($table ?? $this->getTable(), $column ?? $this->getHashColumnName());
     }
 
 
@@ -68,7 +68,7 @@ trait IdHashable {
      */
 	public function getHashIdFieldName() {
         
-        return $this->hashIdFieldName;
+        return $this->hashIdFieldName ?? $this->getHashColumnName();
     }
 
 
@@ -124,6 +124,11 @@ trait IdHashable {
      * @return string
      */
     public function generateHashId($id) {
+
+        if ( ! $this->hasher ) {
+
+            $this->hasher = $this->getConfiguredHasher();
+        }
 
         return $this->hasher->encode($id);
     }
@@ -204,20 +209,45 @@ trait IdHashable {
      */
 	public function initializeIdHashable() {
 
+        $this->hashIdFieldName = $this->getHashColumnName();
+
+        $this->hasher = $this->getConfiguredHasher();
+	}
+
+
+    /**
+     * Get the model/table associated hash column name
+     *
+     * @return string
+     */
+    protected function getHashColumnName() {
+
         $hashColumn = null;
 
-		if (method_exists($this, 'getHashColumn') ) {
+        if (method_exists($this, 'getHashColumn') ) {
 
             $hashColumn = $this->getHashColumn();
         }
 
-        $this->hashIdFieldName = is_string($hashColumn) ? $hashColumn : config('hasher.column');
+        return is_string($hashColumn) ? $hashColumn : config('hasher.column');
+    }
 
-        $this->hasher = new Hasher(config('hasher.key') ?? '', config('hasher.padding'), config('hasher.alphabets'));
+
+    /**
+     * Get the configured hasher instance based on given configs
+     *
+     * @return object<\Touhidurabir\ModelHashid\Hasher\Hasher>
+     */
+    protected function getConfiguredHasher() {
+
+        $hasher = new Hasher(config('hasher.key') ?? '', config('hasher.padding'), config('hasher.alphabets'));
 
         if ( config('hasher.security.randomize') ) {
 
-            $this->hasher = $this->hasher->withRandomize(config('hasher.security.padding'));
+            $hasher = $hasher->withRandomize(config('hasher.security.padding'));
         }
-	}
+
+        return $hasher;
+    }
+    
 }

@@ -61,6 +61,17 @@ return [
 	'alphabets' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
 
 
+    /*
+    |----------------------------------------------------------------------------
+    | The model hashid regeneration queue job
+    |----------------------------------------------------------------------------
+    | The queue job that will be called when run the 'hashid:run' command to 
+    | regenerate the hash ids for any specific models . 
+    |
+    */
+	'regeneration_job' => \Touhidurabir\ModelHashid\Jobs\ModelHashidRegeneratorJob::class,
+
+
 	/*
     |-----------------------------------------------------------------------------
     | Randomize to Maximize Security
