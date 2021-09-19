@@ -72,6 +72,13 @@ class RegenerationCommandTest extends TestCase {
         ]);
 
         $this->assertEquals($status, 0);
+
+        $status = $this->regenerationCommand->execute([
+            'models' => 'User,Profile',
+            '--path' => 'Touhidurabir\\ModelHashid\\Tests\\App\\',
+        ]);
+
+        $this->assertEquals($status, 0);
     }
 
 

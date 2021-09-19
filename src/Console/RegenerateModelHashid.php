@@ -22,6 +22,7 @@ class RegenerateModelHashid extends Command {
      */
     protected $signature = 'hashid:run
                             {models         : Only for given/specified model resource}
+                            {--path         : The given models namespace path}
                             {--update-all   : Rather then only for the missing ones, update all}
                             {--on-job       : Run the regeration process via a queue job}
                             {--job=         : The provided queue job class full namespace path}';
@@ -99,7 +100,7 @@ class RegenerateModelHashid extends Command {
                 continue;
             }
 
-            $models[$index] = 'App\\Models\\' . $model;
+            $models[$index] = ($this->option('path') ?? 'App\\Models\\') . $model;
         }
 
         return array_filter($models, function ($model) {
