@@ -91,6 +91,19 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    public function the_canHaveHashId_method_can_check_if_hash_id_applicable() {
+
+        $profile = new Profile;
+        $this->assertTrue($profile->canHaveHashId());
+
+        $user = new User;
+        $this->assertTrue($user->canHaveHashId());
+    }
+
+
+    /**
+     * @test
+     */
     public function the_getOriginalIdFromHashId_return_original_id_by_deahshing_hashid() {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);

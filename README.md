@@ -89,6 +89,36 @@ This defined the only characters that will be present in a hash string. Best To 
 
 >NOTE : it must be at least 16 characters long and must only contains unique characters. no duplicate allowed like 'aaaabbbbbbcc' etc .
 
+
+### regeneration_job
+```php
+'regeneration_job' => \Touhidurabir\ModelHashid\Jobs\ModelHashidRegeneratorJob::class,
+```
+This defined the job that will be used to run the update or fill up the missing hash id through the **hashid:run** command. 
+
+## Command
+
+This packaga includes a command that can use to set up the model hash id for the missing ones or update existing one . It will be helpful if this package included later in any laravel app that already have some data in it's tables and needed to set up hash id for those records. To utlize this command run
+
+```bash
+php artisan hashid:run User,Profile
+```
+
+The one **argument** it reuired is the name of the models command seperated(if there is multiple models to run for) . Behind the scene it calls a queue job to go through the model recored and work on those to update/fill hash id column value. Other options as follow
+
+### --path=
+By default it assumes all the models are located in the **App\Models\\** namespace . But if it's located some where else , use the option to define the proper model space path with **trailing slash** .
+
+### --update-all
+By default this command will only work with those model records that have the defined hash id column null . So basically it will fill up the missing ones , but if this false is provided with the command it will update all regardless of hashid associated with or not.
+
+### --on-job
+This defined if this will update/fill missing one through a queue job . The command use a job where the main logic resides in . But by default it uses the framework provided **dispatchNow** method to run the jon in sync way . if the falg provided and queue configured properly, it will push the job in the queue . 
+
+### --job= 
+If need to pass custom queue job implementation, it can be directly provided though this option . also one can update the queue class in the config file . 
+
+
 ## Usage
 
 Use the trait **IdHashable** in model where uuid needed to attach
