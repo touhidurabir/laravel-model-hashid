@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\ModelHashid;
 
+use ReflectionClass;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Builder;
 use Touhidurabir\ModelHashid\Hasher\Hasher;
@@ -55,7 +56,7 @@ trait IdHashable {
      * 
      * @return bool
      */
-    public function canHaveHashId(string $table = null, string $column = null) {
+    public function canHaveHashId(?string $table = null, ?string $column = null) {
 
         return Schema::hasColumn($table ?? $this->getTable(), $column ?? $this->getHashColumnName());
     }
@@ -141,7 +142,9 @@ trait IdHashable {
      */
 	public static function bootIdHashable() {
 
-        $self = new self;
+        // Instantiate without the constructor, as newer Laravel versions forbid
+        // constructing a model while it is still being booted.
+        $self = (new ReflectionClass(self::class))->newInstanceWithoutConstructor();
 
 		$self->initializeIdHashable();
 

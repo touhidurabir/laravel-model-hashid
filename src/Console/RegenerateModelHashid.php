@@ -70,9 +70,12 @@ class RegenerateModelHashid extends Command {
                 return $this->handleFailure('Job class not found');
             }
 
+            // dispatchNow was removed in Laravel 10, dispatchSync is the replacement
+            $dispatchMethod = method_exists($job, 'dispatchSync') ? 'dispatchSync' : 'dispatchNow';
+
             $this->option('on-job') 
                 ? $job::dispatch($models, $this->option('update-all')) 
-                : $job::dispatchNow($models, $this->option('update-all'));
+                : $job::{$dispatchMethod}($models, $this->option('update-all'));
             
         } catch (Throwable $exception) {
             

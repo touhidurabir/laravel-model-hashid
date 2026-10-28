@@ -59,7 +59,7 @@ class Hasher {
      * @return void
      */
     public function __construct(string  $key        = '', 
-                                int     $padding    = null, 
+                                ?int    $padding    = null, 
                                 string  $alphabets  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') {
 
         $this->key          = $key;
@@ -99,7 +99,7 @@ class Hasher {
      * @param  mixed<string|null> $padding
      * @return $this
      */
-    public function setPadding(string $padding = null) {
+    public function setPadding(?string $padding = null) {
 
         $this->padding = $padding;
 

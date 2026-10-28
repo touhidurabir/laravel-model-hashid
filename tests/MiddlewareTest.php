@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\ModelHashid\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Http\Request;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Route;
@@ -79,6 +80,7 @@ class MiddlewareTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_DehashRouteParams_middleware_can_dehash_route_params() {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
@@ -98,6 +100,7 @@ class MiddlewareTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_DehashRequestParams_middleware_can_dehash_post_request_params() {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
@@ -117,6 +120,7 @@ class MiddlewareTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_DehashRequestParams_middleware_can_dehash_get_request_params() {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);

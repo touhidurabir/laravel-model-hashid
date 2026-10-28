@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\ModelHashid\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -12,6 +13,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_be_initialized() {
 
         $hasher = new Hasher;
@@ -24,6 +26,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_be_initialized_with_key_and_or_padding() {
 
         $hasher = new Hasher('', 6);
@@ -43,6 +46,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_have_the_key_set_or_update_after_initialize() {
 
         $hasher = new Hasher();
@@ -56,6 +60,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_have_the_padding_set_or_update_after_initialize() {
 
         $hasher = new Hasher();
@@ -69,6 +74,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_have_the_alphabets_set_or_update_after_initialize() {
 
         $hasher = new Hasher();
@@ -82,6 +88,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_throws_exception_if_alphabet_less_that_16_characters() {
 
         $this->expectException(Exception::class);
@@ -93,6 +100,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_hash_a_number() {
 
         $hasher = new Hasher;
@@ -104,6 +112,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_dehash_a_string_to_number() {
 
         $hasher = new Hasher;
@@ -115,6 +124,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_will_throw_exception_given_non_numeric_value_to_encode() {
 
         $this->expectException(InvalidArgumentException::class);
@@ -126,6 +136,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_will_throw_exception_given_negative_numeric_value_to_encode() {
 
         $this->expectException(InvalidArgumentException::class);
@@ -137,6 +148,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_generate_hash_for_given_padding() {
 
         $hasher = new Hasher('Some Key', 6);
@@ -148,6 +160,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_generate_hash_string_consist_of_given_alphabets_only() {
 
         $alphabets = 'abcd1234xyzXYZMNOPqrst';
@@ -161,6 +174,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_randomize_the_hash() {
 
         $hasher = new Hasher('Some Key', 6);
@@ -172,6 +186,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_decode_a_randomized_hash() {
 
         $hasher = new Hasher('Key', 8);
@@ -185,6 +200,7 @@ class HasherTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_returns_null_on_failed_hash_decode() {
 
         $hasher = new Hasher('Key', 8);

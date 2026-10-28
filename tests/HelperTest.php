@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\ModelHashid\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
 use Touhidurabir\ModelHashid\Tests\Traits\LaravelTestBootstrapping;
 
@@ -12,6 +13,7 @@ class HelperTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_decode_hashids_method_is_callable() {
 
         $this->assertTrue(is_callable('decode_hashids'));
@@ -21,6 +23,7 @@ class HelperTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_decode_hashid_method_is_callable() {
 
         $this->assertTrue(is_callable('decode_hashid'));
@@ -30,6 +33,7 @@ class HelperTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_decode_hashid_method_can_decode() {
 
         $this->assertIsInt(decode_hashid('lejRej'));
@@ -40,6 +44,7 @@ class HelperTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_decode_hashid_method_on_failed_decode_return_original() {
 
         $this->assertEquals(decode_hashid(12), 12);
@@ -49,6 +54,7 @@ class HelperTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_decode_hashids_method_can_decode_one_or_multipe() {
 
         $this->assertIsInt(decode_hashids('lejRej'));

@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\ModelHashid\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
 use Touhidurabir\ModelHashid\Tests\App\User;
@@ -32,6 +33,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_add_an_hashid_on_creation_to_model_record() {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
@@ -43,6 +45,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_decoded_hashed_id_is_same_as_model_id() {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
@@ -54,6 +57,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_hash_based_on_model_specific_column_name() {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
@@ -67,6 +71,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_getHashId_method_can_return_the_hash_id() {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
@@ -78,6 +83,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_getHashIdFieldName_method_return_the_proper_hash_column_name() {
 
         $profile = new Profile;
@@ -91,6 +97,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_canHaveHashId_method_can_check_if_hash_id_applicable() {
 
         $profile = new Profile;
@@ -104,6 +111,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_getOriginalIdFromHashId_return_original_id_by_deahshing_hashid() {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
@@ -118,6 +126,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_findByHashId_can_find_a_model_record() {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
@@ -136,6 +145,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function it_can_query_model_using_byHashId_local_scope() {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
@@ -159,6 +169,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_specific_model_hash_id_generation_can_be_disabled_globally() {
 
         User::disbaleHashIdGeneration();
@@ -172,6 +183,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_specific_model_hash_id_generation_disabling_will_not_impact_other_model() {
 
         User::disbaleHashIdGeneration();
@@ -187,6 +199,7 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_specific_model_hash_id_disabled_generation_can_be_enabled() {
 
         User::disbaleHashIdGeneration();

@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\ModelHashid\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Illuminate\Support\Collection;
@@ -65,6 +66,7 @@ class RegenerationCommandTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_command_will_run() {
 
         $status = $this->regenerationCommand->execute([
@@ -85,6 +87,7 @@ class RegenerationCommandTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_command_will_fail_given_wrong() {
 
         $status = $this->regenerationCommand->execute([
@@ -97,6 +100,7 @@ class RegenerationCommandTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_command_will_run_properly_with_provided_job() {
 
         $status = $this->regenerationCommand->execute([
@@ -111,6 +115,7 @@ class RegenerationCommandTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_command_will_fail_given_wrong_job() {
 
         $status = $this->regenerationCommand->execute([
@@ -125,6 +130,7 @@ class RegenerationCommandTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_command_will_run_set_proper_hash_id_for_missing_rows() {
 
         User::disbaleHashIdGeneration();

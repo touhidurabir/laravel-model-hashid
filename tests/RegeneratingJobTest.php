@@ -2,6 +2,7 @@
 
 namespace Touhidurabir\ModelHashid\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
@@ -34,6 +35,7 @@ class RegeneratingJobTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_job_will_run() {
 
         Bus::fake();
@@ -55,6 +57,7 @@ class RegeneratingJobTest extends TestCase {
     /**
      * @test
      */
+    #[Test]
     public function the_job_can_fill_out_missing_hash_id() {
 
         User::disbaleHashIdGeneration();
@@ -63,7 +66,7 @@ class RegeneratingJobTest extends TestCase {
 
         $this->assertNull($user->getHashId());
 
-        ModelHashidRegeneratorJob::dispatchNow(
+        ModelHashidRegeneratorJob::dispatchSync(
             [\Touhidurabir\ModelHashid\Tests\App\User::class],
             true
         );
