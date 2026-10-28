@@ -292,7 +292,7 @@ class User extends JsonResource {
 
 The core of this package is the **Hasher** class that handle the whole hash **decode/encode** process. This is hightly dependent on the popular php [Hashid Package](https://github.com/vinkla/hashids) with some bit of extra functionality . One can also use this hasher as for their need fits . To see the details of the hasher class and how it works, check the code itself at **Touhidurabir\ModelHashid\Hasher\Hasher** . 
 
-A configured hasher is also available through the **ModelHashid** facade, for example `ModelHashid::encode(1)`. The package auto registers it under the `ModelHashid` alias. The older `ModelUuid` alias still works but is deprecated, because it collides with the laravel-model-uuid package, and it will be removed in the next major release.
+A configured hasher is also available through the **ModelHashid** facade, for example `ModelHashid::encode(1)`. The package auto registers it under the `ModelHashid` alias.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

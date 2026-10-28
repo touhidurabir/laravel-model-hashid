@@ -26,7 +26,7 @@ class FacadeTest extends TestCase
      * @test
      */
     #[Test]
-    public function the_package_registers_the_model_hashid_alias_and_keeps_the_old_one()
+    public function the_package_registers_only_the_model_hashid_alias()
     {
 
         $composer = json_decode(file_get_contents(__DIR__ . '/../composer.json'), true);
@@ -34,6 +34,8 @@ class FacadeTest extends TestCase
         $aliases = $composer['extra']['laravel']['aliases'] ?? [];
 
         $this->assertSame(ModelHashid::class, $aliases['ModelHashid'] ?? null);
-        $this->assertSame(ModelHashid::class, $aliases['ModelUuid'] ?? null);
+
+        // the copy-pasted ModelUuid alias collided with laravel-model-uuid's facade
+        $this->assertArrayNotHasKey('ModelUuid', $aliases);
     }
 }

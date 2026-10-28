@@ -45,8 +45,7 @@
                 "Touhidurabir\\ModelHashid\\ModelHashidServiceProvider"
             ],
             "aliases": {
-                "ModelHashid": "Touhidurabir\\ModelHashid\\Facades\\ModelHashid",
-                "ModelUuid": "Touhidurabir\\ModelHashid\\Facades\\ModelHashid"
+                "ModelHashid": "Touhidurabir\\ModelHashid\\Facades\\ModelHashid"
             }
         }
     },
