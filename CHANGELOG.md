@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+
+## [1.0.0] - 2021-08-29
+- Initial release
+
+## [1.1.0] - 2021-09-20
+- Bug fix.
+- Added hash id regenration command feature.
+- Tests update and new tests added.
+- Readme update.
+
+## [1.2.0] - 2026-10-28
 - Laravel 11, 12 and 13 support added.
 - PHPUnit 10, 11 and 12 support for tests; test methods now use `#[Test]` attributes alongside the `@test` annotations.
 - Fixed `LogicException` on recent Laravel versions caused by instantiating the model while it was being booted in `IdHashable::bootIdHashable`.
@@ -16,13 +28,3 @@ All notable changes to this project will be documented in this file.
 - `hashid:run` now returns an explicit success exit code instead of `null`.
 - Added a `bootstrap/app.php` middleware registration example for Laravel 11+ to the README.
 - Tests: the static hash id generation flag is reset between tests, so the suite passes in random order.
-
-
-## [1.0.0] - 2021-08-29
-- Initial release
-
-## [1.1.0] - 2021-09-20
-- Bug fix.
-- Added hash id regenration command feature.
-- Tests update and new tests added.
-- Readme update.
