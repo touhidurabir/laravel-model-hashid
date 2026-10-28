@@ -47,9 +47,25 @@ class RegenerationCommandTest extends TestCase
     protected function setUp(): void
     {
 
+        $this->resetHashIdGeneration();
+
         parent::setUp();
 
         $this->configureTestCommand();
+    }
+
+
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+
+        $this->resetHashIdGeneration();
+
+        parent::tearDown();
     }
 
 

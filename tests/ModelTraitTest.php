@@ -14,6 +14,34 @@ class ModelTraitTest extends TestCase
     use LaravelTestBootstrapping;
 
     /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+
+        $this->resetHashIdGeneration();
+
+        parent::setUp();
+    }
+
+
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+
+        $this->resetHashIdGeneration();
+
+        parent::tearDown();
+    }
+
+
+    /**
      * Define database migrations.
      *
      * @return void

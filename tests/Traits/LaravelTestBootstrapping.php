@@ -2,11 +2,26 @@
 
 namespace Touhidurabir\ModelHashid\Tests\Traits;
 
+use Touhidurabir\ModelHashid\Tests\App\User;
+use Touhidurabir\ModelHashid\Tests\App\Profile;
 use Touhidurabir\ModelHashid\Facades\ModelHashid;
 use Touhidurabir\ModelHashid\ModelHashidServiceProvider;
 
 trait LaravelTestBootstrapping
 {
+    /**
+     * Re-enable hash id generation, as the static flag outlives a test.
+     *
+     * @return void
+     */
+    protected function resetHashIdGeneration()
+    {
+
+        User::disbaleHashIdGeneration(false);
+        Profile::disbaleHashIdGeneration(false);
+    }
+
+
     /**
      * Get package providers.
      *
