@@ -4,6 +4,7 @@ namespace Touhidurabir\ModelHashid\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
+use Touhidurabir\ModelHashid\Hasher\Hasher;
 use Touhidurabir\ModelHashid\Tests\Traits\LaravelTestBootstrapping;
 
 class HelperTest extends TestCase
@@ -67,6 +68,24 @@ class HelperTest extends TestCase
 
         $this->assertIsArray(decode_hashids(['lejRej', 'mbk5ez']));
         $this->assertEquals(decode_hashids(['lejRej', 'mbk5ez']), [1,2]);
+    }
+
+
+    /**
+     * @test
+     */
+    #[Test]
+    public function the_decode_hashid_method_uses_the_configured_alphabets()
+    {
+
+        $alphabets = 'abcdefghijklmnopqrstuvwxyz';
+
+        config(['hasher.alphabets' => $alphabets]);
+
+        $hash = (new Hasher(config('hasher.key'), config('hasher.padding'), $alphabets))->encode(15);
+
+        $this->assertSame(15, decode_hashid($hash));
+        $this->assertSame([15, 15], decode_hashids([$hash, $hash]));
     }
 
 }

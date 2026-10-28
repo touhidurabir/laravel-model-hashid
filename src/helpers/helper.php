@@ -51,7 +51,7 @@ if (! function_exists('decode_hashid')) {
 
         $configs = config('hasher');
 
-        $hasher = new Hasher($configs['key'] ?? '', $configs['padding']);
+        $hasher = new Hasher($configs['key'] ?? '', $configs['padding'], $configs['alphabets']);
 
         if ($configs['security']['randomize']) {
 
