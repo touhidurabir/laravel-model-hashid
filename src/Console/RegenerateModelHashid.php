@@ -51,7 +51,7 @@ class RegenerateModelHashid extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle()
     {
@@ -83,8 +83,10 @@ class RegenerateModelHashid extends Command
 
             $this->outputConsoleException($exception);
 
-            return 1;
+            return self::FAILURE;
         }
+
+        return self::SUCCESS;
     }
 
 

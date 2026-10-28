@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Fixed `decode_hashid()` / `decode_hashids()` ignoring the `hasher.alphabets` config, which also affected the `DehashRouteParams` and `DehashRequestParams` middlewares. **Behaviour change:** apps with a custom alphabet now decode hash ids correctly instead of getting the hash string back.
 - Added the `ModelHashid` facade alias. The `ModelUuid` alias is kept for backwards compatibility but is deprecated (it collides with laravel-model-uuid) and will be removed in the next major release.
 - Allowed `hashids/hashids` 5.x (`^4.1||^5.0`). A `Hasher` without a padding now passes `0` to Hashids instead of `null`, which 5.x rejects. Generated hashes are identical on 4.x and 5.x.
+- `hashid:run` now returns an explicit success exit code instead of `null`.
 - Tests: the static hash id generation flag is reset between tests, so the suite passes in random order.
 
 

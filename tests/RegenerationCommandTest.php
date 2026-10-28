@@ -171,4 +171,22 @@ class RegenerationCommandTest extends TestCase
         $this->assertNotNull($user->getHashId());
     }
 
+
+    /**
+     * @test
+     */
+    #[Test]
+    public function the_command_handle_returns_an_explicit_success_code()
+    {
+
+        $command = new RegenerateModelHashid();
+        $command->setLaravel($this->app);
+
+        (new CommandTester($command))->execute([
+            'models' => 'Touhidurabir\\ModelHashid\\Tests\\App\\User',
+        ]);
+
+        $this->assertSame(0, $command->handle());
+    }
+
 }
