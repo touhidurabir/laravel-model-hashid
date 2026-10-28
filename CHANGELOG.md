@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Code style formatted to PSR-12 with Laravel Pint (`composer format` / `composer lint`).
 - Replaced Travis CI with GitHub Actions (PHP 8.2–8.4 × Laravel 11/12/13, plus a code style check).
 - Fixed `decode_hashid()` / `decode_hashids()` ignoring the `hasher.alphabets` config, which also affected the `DehashRouteParams` and `DehashRequestParams` middlewares. **Behaviour change:** apps with a custom alphabet now decode hash ids correctly instead of getting the hash string back.
+- Added the `ModelHashid` facade alias. The `ModelUuid` alias is kept for backwards compatibility but is deprecated (it collides with laravel-model-uuid) and will be removed in the next major release.
 - Tests: the static hash id generation flag is reset between tests, so the suite passes in random order.
 
 
