@@ -7,8 +7,8 @@ use InvalidArgumentException;
 use Hashids\Hashids;
 use Illuminate\Support\Str;
 
-class Hasher {
-
+class Hasher
+{
     /**
      * The unique key to hash
      *
@@ -38,15 +38,15 @@ class Hasher {
      *
      * @var int
      */
-	protected $hashRandomizePadingLength;
+    protected $hashRandomizePadingLength;
 
 
-	/**
+    /**
      * should randomize hash ids by adding extra padding
      *
      * @var boolean
      */
-	protected $hashRandomize = false;
+    protected $hashRandomize = false;
 
 
     /**
@@ -55,12 +55,14 @@ class Hasher {
      * @param  string           $key
      * @param  mixed<int|null>  $padding
      * @param  string           $alphabets
-     * 
+     *
      * @return void
      */
-    public function __construct(string  $key        = '', 
-                                ?int    $padding    = null, 
-                                string  $alphabets  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') {
+    public function __construct(
+        string  $key        = '',
+        ?int    $padding    = null,
+        string  $alphabets  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+    ) {
 
         $this->key          = $key;
         $this->padding      = $padding;
@@ -74,7 +76,8 @@ class Hasher {
      * @param  string $key
      * @return $this
      */
-    public function setKey(string $key = '') {
+    public function setKey(string $key = '')
+    {
 
         $this->key = $key;
 
@@ -87,7 +90,8 @@ class Hasher {
      *
      * @return string
      */
-    public function getKey() {
+    public function getKey()
+    {
 
         return $this->key;
     }
@@ -99,7 +103,8 @@ class Hasher {
      * @param  mixed<string|null> $padding
      * @return $this
      */
-    public function setPadding(?string $padding = null) {
+    public function setPadding(?string $padding = null)
+    {
 
         $this->padding = $padding;
 
@@ -112,7 +117,8 @@ class Hasher {
      *
      * @return mixed<string|null>
      */
-    public function getPadding() {
+    public function getPadding()
+    {
 
         return $this->padding;
     }
@@ -124,7 +130,8 @@ class Hasher {
      * @param  string $alphabets
      * @return $this
      */
-    public function setAlphabets(string $alphabets) {
+    public function setAlphabets(string $alphabets)
+    {
 
         $this->alphabets = $this->ensureIsValidHashAlphabets($alphabets);
 
@@ -137,7 +144,8 @@ class Hasher {
      *
      * @return string
      */
-    public function getAlphabets() {
+    public function getAlphabets()
+    {
 
         return $this->alphabets;
     }
@@ -149,7 +157,8 @@ class Hasher {
      * @param  int $padding
      * @return $this
      */
-    public function withRandomize(int $padding) {
+    public function withRandomize(int $padding)
+    {
 
         $this->hashRandomize = true;
 
@@ -157,7 +166,7 @@ class Hasher {
 
         return $this;
     }
-    
+
 
     /**
      * Get the encoded hash string
@@ -165,7 +174,8 @@ class Hasher {
      * @param  mixed<int|string> $hashable
      * @return string
      */
-    public function encode($hashable) {
+    public function encode($hashable)
+    {
 
         $this->ensureIsValidHashableParam($hashable);
 
@@ -181,7 +191,8 @@ class Hasher {
      * @param  string $hash
      * @return mixed<int|string>
      */
-    public function decode(string $hash) {
+    public function decode(string $hash)
+    {
 
         return $this->gethashId()
                     ->decode(
@@ -196,7 +207,8 @@ class Hasher {
      *
      * @return object<\Hashids\Hashids>
      */
-    protected function getHashId() {
+    protected function getHashId()
+    {
 
         return (new Hashids($this->key, $this->padding, $this->alphabets));
     }
@@ -208,9 +220,10 @@ class Hasher {
      * @param  string $hash
      * @return string
      */
-    protected function applyRandomize(string $hash) {
+    protected function applyRandomize(string $hash)
+    {
 
-        if ( ! $this->hashRandomize ) {
+        if (! $this->hashRandomize) {
 
             return $hash;
         }
@@ -225,9 +238,10 @@ class Hasher {
      * @param  string $hash
      * @return string
      */
-    protected function removeRandomize(string $hash) {
+    protected function removeRandomize(string $hash)
+    {
 
-        if ( ! $this->hashRandomize ) {
+        if (! $this->hashRandomize) {
 
             return $hash;
         }
@@ -241,15 +255,16 @@ class Hasher {
      *
      * @param  mixed<int|string> $hashable
      * @return void
-     * 
+     *
      * @throws InvalidArgumentException
      */
-    protected function ensureIsValidHashableParam($hashable) {
+    protected function ensureIsValidHashableParam($hashable)
+    {
 
-        if ( !is_numeric($hashable) || ($hashable < 0) ) {
-			
+        if (!is_numeric($hashable) || ($hashable < 0)) {
+
             throw new InvalidArgumentException('The hashable must be a non negative numeric value');
-		}
+        }
     }
 
 
@@ -258,12 +273,13 @@ class Hasher {
      *
      * @param  string $alphabets
      * @return string
-     * 
+     *
      * @throws Exception
      */
-    protected function ensureIsValidHashAlphabets(string $alphabets) {
+    protected function ensureIsValidHashAlphabets(string $alphabets)
+    {
 
-        if ( strlen($alphabets) < 16 ) {
+        if (strlen($alphabets) < 16) {
 
             throw new Exception('Alphabets must be 16 characters long');
         }
@@ -271,7 +287,7 @@ class Hasher {
         $splitAlphabets = str_split($alphabets);
         $uniqueSplitAlphabets = array_unique($splitAlphabets);
 
-        if ( count($splitAlphabets) !== count($uniqueSplitAlphabets) ) {
+        if (count($splitAlphabets) !== count($uniqueSplitAlphabets)) {
 
             throw new Exception('Alphabets must contains unique characters set, no duplicaion allowed');
         }

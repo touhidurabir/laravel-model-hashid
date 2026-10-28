@@ -4,15 +4,14 @@ namespace Touhidurabir\ModelHashid\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Touhidurabir\ModelHashid\Tests\App\User;
 use Touhidurabir\ModelHashid\Tests\App\Profile;
 use Touhidurabir\ModelHashid\Jobs\ModelHashidRegeneratorJob;
 use Touhidurabir\ModelHashid\Tests\Traits\LaravelTestBootstrapping;
 
-class RegeneratingJobTest extends TestCase {
-
+class RegeneratingJobTest extends TestCase
+{
     use LaravelTestBootstrapping;
 
     /**
@@ -20,10 +19,11 @@ class RegeneratingJobTest extends TestCase {
      *
      * @return void
      */
-    protected function defineDatabaseMigrations() {
+    protected function defineDatabaseMigrations()
+    {
 
         $this->loadMigrationsFrom(__DIR__ . '/App/database/migrations');
-        
+
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
         $this->beforeApplicationDestroyed(function () {
@@ -36,7 +36,8 @@ class RegeneratingJobTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_job_will_run() {
+    public function the_job_will_run()
+    {
 
         Bus::fake();
 
@@ -58,7 +59,8 @@ class RegeneratingJobTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_job_can_fill_out_missing_hash_id() {
+    public function the_job_can_fill_out_missing_hash_id()
+    {
 
         User::disbaleHashIdGeneration();
 

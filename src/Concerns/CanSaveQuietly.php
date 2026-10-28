@@ -2,20 +2,21 @@
 
 namespace Touhidurabir\ModelHashid\Concerns;
 
-trait CanSaveQuietly {
-
-	/**
+trait CanSaveQuietly
+{
+    /**
      * Save the model without firing any model events
      *
      * @param array $options
      * @return mixed
      */
-	public function saveModelQuietly(array $options = []) {
+    public function saveModelQuietly(array $options = [])
+    {
 
-	    return static::withoutEvents(function () use ($options) {
-	        return $this->save($options);
-	    });
-	}
+        return static::withoutEvents(function () use ($options) {
+            return $this->save($options);
+        });
+    }
 
 
     /**

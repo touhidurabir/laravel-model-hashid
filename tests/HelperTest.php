@@ -6,15 +6,16 @@ use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
 use Touhidurabir\ModelHashid\Tests\Traits\LaravelTestBootstrapping;
 
-class HelperTest extends TestCase {
-
+class HelperTest extends TestCase
+{
     use LaravelTestBootstrapping;
 
     /**
      * @test
      */
     #[Test]
-    public function the_decode_hashids_method_is_callable() {
+    public function the_decode_hashids_method_is_callable()
+    {
 
         $this->assertTrue(is_callable('decode_hashids'));
     }
@@ -24,17 +25,19 @@ class HelperTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_decode_hashid_method_is_callable() {
+    public function the_decode_hashid_method_is_callable()
+    {
 
         $this->assertTrue(is_callable('decode_hashid'));
     }
-    
-    
+
+
     /**
      * @test
      */
     #[Test]
-    public function the_decode_hashid_method_can_decode() {
+    public function the_decode_hashid_method_can_decode()
+    {
 
         $this->assertIsInt(decode_hashid('lejRej'));
         $this->assertEquals(decode_hashid('lejRej'), 1);
@@ -45,17 +48,19 @@ class HelperTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_decode_hashid_method_on_failed_decode_return_original() {
+    public function the_decode_hashid_method_on_failed_decode_return_original()
+    {
 
         $this->assertEquals(decode_hashid(12), 12);
     }
 
-    
+
     /**
      * @test
      */
     #[Test]
-    public function the_decode_hashids_method_can_decode_one_or_multipe() {
+    public function the_decode_hashids_method_can_decode_one_or_multipe()
+    {
 
         $this->assertIsInt(decode_hashids('lejRej'));
         $this->assertEquals(decode_hashids('lejRej'), 1);

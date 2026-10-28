@@ -12,8 +12,8 @@ use Touhidurabir\ModelHashid\Http\Middleware\DehashRouteParams;
 use Touhidurabir\ModelHashid\Http\Middleware\DehashRequestParams;
 use Touhidurabir\ModelHashid\Tests\Traits\LaravelTestBootstrapping;
 
-class MiddlewareTest extends TestCase {
-
+class MiddlewareTest extends TestCase
+{
     use LaravelTestBootstrapping;
 
 
@@ -22,10 +22,11 @@ class MiddlewareTest extends TestCase {
      *
      * @return void
      */
-    protected function defineDatabaseMigrations() {
+    protected function defineDatabaseMigrations()
+    {
 
         $this->loadMigrationsFrom(__DIR__ . '/App/database/migrations');
-        
+
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
         $this->beforeApplicationDestroyed(function () {
@@ -40,24 +41,25 @@ class MiddlewareTest extends TestCase {
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    protected function defineRoutes($router) {
-        
-        Route::get('/users/{user}', function($user) {
-            
+    protected function defineRoutes($router)
+    {
+
+        Route::get('/users/{user}', function ($user) {
+
             return $user;
 
         })->middleware(['web', DehashRouteParams::class]);
 
 
-        Route::get('/users/{user}/profiles/{profile}', function($user, $profile) {
-            
+        Route::get('/users/{user}/profiles/{profile}', function ($user, $profile) {
+
             return [$user, $profile];
 
         })->middleware(['web', DehashRouteParams::class]);
 
 
-        Route::post('/api/users/{user}', function(Request $request, $user) {
-            
+        Route::post('/api/users/{user}', function (Request $request, $user) {
+
             return response()->json([
                 'user_id' => $user,
                 'profile_id' => $request->get('profile_id'),
@@ -66,8 +68,8 @@ class MiddlewareTest extends TestCase {
         })->middleware(['web', DehashRouteParams::class, DehashRequestParams::class]);
 
 
-        Route::get('/profiles/{profile}', function(Request $request, $profile) {
-            
+        Route::get('/profiles/{profile}', function (Request $request, $profile) {
+
             return response()->json([
                 'user_id' => $request->get('user_id'),
                 'profile_id' => $profile,
@@ -81,11 +83,12 @@ class MiddlewareTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_DehashRouteParams_middleware_can_dehash_route_params() {
+    public function the_DehashRouteParams_middleware_can_dehash_route_params()
+    {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
-        
+
         $this->get("/users/{$user->hash_id}")->assertOk();
         $this->get("/users/{$user->hash_id}/profiles/{$profile->hash}")->assertOk();
 
@@ -101,11 +104,12 @@ class MiddlewareTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_DehashRequestParams_middleware_can_dehash_post_request_params() {
+    public function the_DehashRequestParams_middleware_can_dehash_post_request_params()
+    {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
-        
+
         $response = $this->postJson("/api/users/{$user->hash_id}", ['profile_id' => $profile->getHashId()]);
 
         $response
@@ -121,7 +125,8 @@ class MiddlewareTest extends TestCase {
      * @test
      */
     #[Test]
-    public function the_DehashRequestParams_middleware_can_dehash_get_request_params() {
+    public function the_DehashRequestParams_middleware_can_dehash_get_request_params()
+    {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
@@ -135,5 +140,5 @@ class MiddlewareTest extends TestCase {
                 'profile_id' => $profile->id
             ]);
     }
-    
+
 }

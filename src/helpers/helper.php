@@ -8,28 +8,29 @@ use Touhidurabir\ModelHashid\Hasher\Hasher;
  * @param  mixed<int|string|array> $id
  * @return mixed<String|Array>
  */
-if ( ! function_exists('decode_hashids') ) {
+if (! function_exists('decode_hashids')) {
 
-	function decode_hashids($hashids) {
+    function decode_hashids($hashids)
+    {
 
-		if ( is_numeric($hashids) || is_string($hashids) ) {
+        if (is_numeric($hashids) || is_string($hashids)) {
 
-			return decode_hashid($hashids);
-		}
+            return decode_hashid($hashids);
+        }
 
-		if ( is_array($hashids) && !empty($hashids) ) {
+        if (is_array($hashids) && !empty($hashids)) {
 
-			$ids = [];
+            $ids = [];
 
-			foreach ($hashids as $key => $hashid) {
-				$ids[$key] = decode_hashid($hashid);
-			}
+            foreach ($hashids as $key => $hashid) {
+                $ids[$key] = decode_hashid($hashid);
+            }
 
-			return $ids;
-		}
+            return $ids;
+        }
 
-		return $hashids;
-	}
+        return $hashids;
+    }
 }
 
 
@@ -39,21 +40,24 @@ if ( ! function_exists('decode_hashids') ) {
  * @param  mixed<int|string> $id
  * @return String
  */
-if ( ! function_exists('decode_hashid') ) {
+if (! function_exists('decode_hashid')) {
 
-	function decode_hashid($hashid = null) {
+    function decode_hashid($hashid = null)
+    {
 
-		if ( ! $hashid ) { return null; }
+        if (! $hashid) {
+            return null;
+        }
 
-		$configs = config('hasher');
+        $configs = config('hasher');
 
-		$hasher = new Hasher($configs['key'] ?? '', $configs['padding']);
+        $hasher = new Hasher($configs['key'] ?? '', $configs['padding']);
 
-		if ( $configs['security']['randomize'] ) {
+        if ($configs['security']['randomize']) {
 
-			$hasher = $hasher->withRandomize($configs['security']['padding']);
-		}
+            $hasher = $hasher->withRandomize($configs['security']['padding']);
+        }
 
-		return $hasher->decode($hashid) ?? $hashid;
-	}
+        return $hasher->decode($hashid) ?? $hashid;
+    }
 }

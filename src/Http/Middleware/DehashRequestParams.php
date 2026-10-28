@@ -3,25 +3,23 @@
 namespace Touhidurabir\ModelHashid\Http\Middleware;
 
 use Closure;
-use Throwable;
-use Hashids\Hashids;
-use Illuminate\Http\Response;
 
-class DehashRequestParams {
-
+class DehashRequestParams
+{
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * 
+     *
      * @return mixed
      */
-    public function handle($request, Closure $next) {
+    public function handle($request, Closure $next)
+    {
 
-        if ( ! config('hasher.enable') ) {
+        if (! config('hasher.enable')) {
 
-            return $next($request);    
+            return $next($request);
         }
 
         $dehashedParams = [];
@@ -32,7 +30,7 @@ class DehashRequestParams {
         }
 
         $request->merge($dehashedParams);
-        
+
         return $next($request);
     }
 }

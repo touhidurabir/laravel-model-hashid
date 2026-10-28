@@ -3,14 +3,13 @@
 namespace Touhidurabir\ModelHashid\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class ModelHashidRegeneratorJob implements ShouldQueue {
-
+class ModelHashidRegeneratorJob implements ShouldQueue
+{
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
@@ -37,10 +36,11 @@ class ModelHashidRegeneratorJob implements ShouldQueue {
      *
      * @param  array $models
      * @param  bool $updateAll
-     * 
+     *
      * @return void
      */
-    public function __construct(array $models, bool $updateAll) {
+    public function __construct(array $models, bool $updateAll)
+    {
 
         $this->models       = $models;
         $this->updateAll    = $updateAll;
@@ -52,20 +52,21 @@ class ModelHashidRegeneratorJob implements ShouldQueue {
      *
      * @return void
      */
-    public function handle() {
+    public function handle()
+    {
 
-        foreach($this->models as $model) {
+        foreach ($this->models as $model) {
 
             $traits = class_uses_recursive($model);
 
-            if ( ! in_array('Touhidurabir\\ModelHashid\\IdHashable', array_values($traits)) ) {
+            if (! in_array('Touhidurabir\\ModelHashid\\IdHashable', array_values($traits))) {
 
                 continue;
             }
 
-            $instance = new $model;
-            
-            if ( ! $instance->canHaveHashId() ) {
+            $instance = new $model();
+
+            if (! $instance->canHaveHashId()) {
 
                 continue;
             }
@@ -79,11 +80,11 @@ class ModelHashidRegeneratorJob implements ShouldQueue {
             $records->chunk(5000, function ($rows) use ($hashColumn, $instance) {
                 $rows->each(function ($row) use ($hashColumn, $instance) {
                     $row->update([
-                        $hashColumn => $instance->generateHashId( $row->id )
+                        $hashColumn => $instance->generateHashId($row->id)
                     ]);
                 });
             });
         }
     }
-    
+
 }

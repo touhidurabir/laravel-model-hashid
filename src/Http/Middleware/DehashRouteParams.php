@@ -3,12 +3,9 @@
 namespace Touhidurabir\ModelHashid\Http\Middleware;
 
 use Closure;
-use Throwable;
-use Hashids\Hashids;
-use Illuminate\Http\Response;
 
-class DehashRouteParams {
-
+class DehashRouteParams
+{
     /**
      * Handle an incoming request.
      *
@@ -16,11 +13,12 @@ class DehashRouteParams {
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next) {
+    public function handle($request, Closure $next)
+    {
 
-        if ( ! config('hasher.enable') ) {
+        if (! config('hasher.enable')) {
 
-            return $next($request);    
+            return $next($request);
         }
 
         $parameters = $request->route()->parameters();
@@ -29,7 +27,7 @@ class DehashRouteParams {
 
             $request->route()->setParameter($parameter, decode_hashid($value));
         }
-        
+
         return $next($request);
     }
 }
