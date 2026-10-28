@@ -34,7 +34,7 @@
     },
     "require": {
         "php": ">=7.3",
-        "hashids/hashids": "^4.1",
+        "hashids/hashids": "^4.1||^5.0",
         "illuminate/bus": "^8.61||^9.0||^10.0||^11.0||^12.0||^13.0",
         "illuminate/container": "^8.55||^9.0||^10.0||^11.0||^12.0||^13.0",
         "illuminate/contracts": "^8.61||^9.0||^10.0||^11.0||^12.0||^13.0"

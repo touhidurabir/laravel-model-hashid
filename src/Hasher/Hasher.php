@@ -210,7 +210,8 @@ class Hasher
     protected function getHashId()
     {
 
-        return (new Hashids($this->key, $this->padding, $this->alphabets));
+        // hashids/hashids 5.x types the min length as int, so a null padding must become 0
+        return (new Hashids($this->key, (int) ($this->padding ?? 0), $this->alphabets));
     }
 
 

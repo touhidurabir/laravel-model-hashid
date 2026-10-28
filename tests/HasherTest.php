@@ -222,4 +222,35 @@ class HasherTest extends TestCase
 
         $this->assertNull($hasher->decode('sdfhjdsgds'));
     }
+
+
+    /**
+     * @test
+     */
+    #[Test]
+    public function it_can_hash_and_dehash_without_a_padding()
+    {
+
+        $hasher = new Hasher('Some Key');
+
+        $this->assertNull($hasher->getPadding());
+        $this->assertSame(1, $hasher->decode($hasher->encode(1)));
+    }
+
+
+    /**
+     * @test
+     */
+    #[Test]
+    public function it_generates_the_same_hashes_on_every_supported_hashids_version()
+    {
+
+        $this->assertSame('lejRej', (new Hasher('', 6))->encode(1));
+        $this->assertSame('mbk5ez', (new Hasher('', 6))->encode(2));
+        $this->assertSame('NZ', (new Hasher('Some Key'))->encode(1));
+        $this->assertSame('jgqjonoq', (new Hasher('Some Key', 8, 'abcdefghijklmnopqrstuvwxyz'))->encode(123456789));
+
+        $this->assertSame(123456789, (new Hasher('Some Key', 8, 'abcdefghijklmnopqrstuvwxyz'))->decode('jgqjonoq'));
+    }
+
 }
