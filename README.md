@@ -165,6 +165,28 @@ Touhidurabir\ModelHashid\Http\Middleware\DehashRouteParams // this to dehash rou
 
 Register these middlewares in **Http\Kernel.php** file or in controller/route file separately as require .
 
+On Laravel 11 and later there is no **Http\Kernel.php**. Register them in **bootstrap/app.php** instead:
+
+```php
+use Illuminate\Foundation\Configuration\Middleware;
+use Touhidurabir\ModelHashid\Http\Middleware\DehashRequestParams;
+use Touhidurabir\ModelHashid\Http\Middleware\DehashRouteParams;
+
+->withMiddleware(function (Middleware $middleware) {
+    // apply to every api route, before route model binding runs
+    $middleware->api(prepend: [
+        DehashRequestParams::class,
+        DehashRouteParams::class,
+    ]);
+
+    // or give them aliases and add them per route or route group
+    $middleware->alias([
+        'dehash.request' => DehashRequestParams::class,
+        'dehash.route'   => DehashRouteParams::class,
+    ]);
+})
+```
+
 **NOTE** that the **DehashRequestParams** middleware can dehash request param that is **String(simple hash string)**  or **Array(array of hash string)** only. So if require to handle complex param such as **JSON** string, need to handle that manually. 
 
 To handle such case where one need to decode some keys form a JSON response or for some other purpose need manual dehashing, this package provide 2 helper methods 
