@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Fixed `hashid:run` command on Laravel 10+ by using `dispatchSync` (with `dispatchNow` fallback) for the non-queued run.
 - Fixed PHP 8.4 implicit nullable parameter deprecations in `IdHashable::canHaveHashId`, `Hasher::__construct`, `Hasher::setPadding` and `CommandExceptionHandler::outputConsoleException`.
 - Code style formatted to PSR-12 with Laravel Pint (`composer format` / `composer lint`).
+- Replaced Travis CI with GitHub Actions (PHP 8.2–8.4 × Laravel 11/12/13, plus a code style check).
 
 
 ## [1.0.0] - 2021-08-29
