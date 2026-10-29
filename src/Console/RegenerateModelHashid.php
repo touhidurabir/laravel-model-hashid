@@ -7,8 +7,8 @@ use Throwable;
 use Illuminate\Console\Command;
 use Touhidurabir\ModelHashid\Console\Concerns\CommandExceptionHandler;
 
-class RegenerateModelHashid extends Command {
-
+class RegenerateModelHashid extends Command
+{
     /**
      * Process the handeled exception and provide output
      */
@@ -41,8 +41,9 @@ class RegenerateModelHashid extends Command {
      *
      * @return void
      */
-    public function __construct() {
-        
+    public function __construct()
+    {
+
         parent::__construct();
     }
 
@@ -50,36 +51,42 @@ class RegenerateModelHashid extends Command {
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
-    public function handle() {
+    public function handle()
+    {
 
         $this->info('Initiating hash id regenration process');
 
         try {
-            
-            if ( empty(
-                $models = $this->buildFullModelsNamespace( explode(',', $this->argument('models')) )) 
+
+            if (empty(
+                $models = $this->buildFullModelsNamespace(explode(',', $this->argument('models'))))
             ) {
 
                 return $this->handleFailure('No model has provided');
             }
 
-            if ( ! class_exists($job = $this->option('job') ?? config('hasher.regeneration_job')) ) {
+            if (! class_exists($job = $this->option('job') ?? config('hasher.regeneration_job'))) {
 
                 return $this->handleFailure('Job class not found');
             }
 
-            $this->option('on-job') 
-                ? $job::dispatch($models, $this->option('update-all')) 
-                : $job::dispatchNow($models, $this->option('update-all'));
-            
+            // dispatchNow was removed in Laravel 10, dispatchSync is the replacement
+            $dispatchMethod = method_exists($job, 'dispatchSync') ? 'dispatchSync' : 'dispatchNow';
+
+            $this->option('on-job')
+                ? $job::dispatch($models, $this->option('update-all'))
+                : $job::{$dispatchMethod}($models, $this->option('update-all'));
+
         } catch (Throwable $exception) {
-            
+
             $this->outputConsoleException($exception);
 
-            return 1;
+            return self::FAILURE;
         }
+
+        return self::SUCCESS;
     }
 
 
@@ -89,13 +96,14 @@ class RegenerateModelHashid extends Command {
      * @param  array $models
      * @return array
      */
-    protected function buildFullModelsNamespace(array $models = []) {
-        
+    protected function buildFullModelsNamespace(array $models = [])
+    {
+
         $models = array_map('trim', array_filter(array_unique($models)));
-        
+
         foreach ($models as $index => $model) {
 
-            if ( $this->hasNamespaceAssociatedWith($model) ) {
+            if ($this->hasNamespaceAssociatedWith($model)) {
 
                 continue;
             }
@@ -115,11 +123,12 @@ class RegenerateModelHashid extends Command {
      * @param  string $name
      * @return mixed<string|null>
      */
-    public function hasNamespaceAssociatedWith(string $name) {
+    public function hasNamespaceAssociatedWith(string $name)
+    {
 
         $classFullNameExplode = explode('\\', $name);
 
-        if ( count($classFullNameExplode) <= 1 ) {
+        if (count($classFullNameExplode) <= 1) {
 
             return false;
         }
@@ -132,15 +141,16 @@ class RegenerateModelHashid extends Command {
      * Handle some basic failure case
      *
      * @param  string $message
-     * @param  int    $return 
-     * 
+     * @param  int    $return
+     *
      * @return int
      */
-    protected function handleFailure(string $message, int $return = 1) {
-        
+    protected function handleFailure(string $message, int $return = 1)
+    {
+
         $this->error($message) ;
 
         return $return;
     }
-    
+
 }

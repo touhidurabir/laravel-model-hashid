@@ -2,10 +2,25 @@
 
 namespace Touhidurabir\ModelHashid\Tests\Traits;
 
+use Touhidurabir\ModelHashid\Tests\App\User;
+use Touhidurabir\ModelHashid\Tests\App\Profile;
 use Touhidurabir\ModelHashid\Facades\ModelHashid;
 use Touhidurabir\ModelHashid\ModelHashidServiceProvider;
 
-trait LaravelTestBootstrapping {
+trait LaravelTestBootstrapping
+{
+    /**
+     * Re-enable hash id generation, as the static flag outlives a test.
+     *
+     * @return void
+     */
+    protected function resetHashIdGeneration()
+    {
+
+        User::disbaleHashIdGeneration(false);
+        Profile::disbaleHashIdGeneration(false);
+    }
+
 
     /**
      * Get package providers.
@@ -13,22 +28,24 @@ trait LaravelTestBootstrapping {
      * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
-    protected function getPackageProviders($app) {
+    protected function getPackageProviders($app)
+    {
 
         return [
             ModelHashidServiceProvider::class,
         ];
-    }   
-    
-    
+    }
+
+
     /**
      * Override application aliases.
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
-    protected function getPackageAliases($app) {
-        
+    protected function getPackageAliases($app)
+    {
+
         return [
             'ModelHashid' => ModelHashid::class,
         ];
@@ -41,7 +58,8 @@ trait LaravelTestBootstrapping {
      * @param  Illuminate\Foundation\Application $app
      * @return void
      */
-    protected function defineEnvironment($app) {
+    protected function defineEnvironment($app)
+    {
 
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
@@ -55,7 +73,7 @@ trait LaravelTestBootstrapping {
         $app['config']->set('app.debug', false);
         $app['config']->set('app.key', env('APP_KEY', 'base64:4vaRSWQcoaHh8mA8qIRxL1Ei+UNIj9Wst9rY+ne2rE4='));
         $app['config']->set('app.cipher', 'AES-256-CBC');
-        
+
         $app['config']->set('hasher.enable', true);
     }
 }

@@ -6,8 +6,8 @@ use Touhidurabir\ModelHashid\IdHashable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Profile extends Model {
-
+class Profile extends Model
+{
     use SoftDeletes;
 
     use IdHashable;
@@ -33,7 +33,8 @@ class Profile extends Model {
      *
      * @return string
      */
-    public function getHashColumn() {
+    public function getHashColumn()
+    {
 
         return 'hash';
     }

@@ -2,25 +2,55 @@
 
 namespace Touhidurabir\ModelHashid\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
 use Touhidurabir\ModelHashid\Tests\App\User;
 use Touhidurabir\ModelHashid\Tests\App\Profile;
 use Touhidurabir\ModelHashid\Tests\Traits\LaravelTestBootstrapping;
 
-class ModelTraitTest extends TestCase {
-
+class ModelTraitTest extends TestCase
+{
     use LaravelTestBootstrapping;
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+
+        $this->resetHashIdGeneration();
+
+        parent::setUp();
+    }
+
+
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+
+        $this->resetHashIdGeneration();
+
+        parent::tearDown();
+    }
+
 
     /**
      * Define database migrations.
      *
      * @return void
      */
-    protected function defineDatabaseMigrations() {
+    protected function defineDatabaseMigrations()
+    {
 
         $this->loadMigrationsFrom(__DIR__ . '/App/database/migrations');
-        
+
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
         $this->beforeApplicationDestroyed(function () {
@@ -32,7 +62,9 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function it_add_an_hashid_on_creation_to_model_record() {
+    #[Test]
+    public function it_add_an_hashid_on_creation_to_model_record()
+    {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
 
@@ -43,7 +75,9 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function the_decoded_hashed_id_is_same_as_model_id() {
+    #[Test]
+    public function the_decoded_hashed_id_is_same_as_model_id()
+    {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
 
@@ -54,7 +88,9 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function it_can_hash_based_on_model_specific_column_name() {
+    #[Test]
+    public function it_can_hash_based_on_model_specific_column_name()
+    {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
 
@@ -67,23 +103,27 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function the_getHashId_method_can_return_the_hash_id() {
+    #[Test]
+    public function the_getHashId_method_can_return_the_hash_id()
+    {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
 
         $this->assertIsString($profile->getHashId());
-    }   
-    
+    }
+
 
     /**
      * @test
      */
-    public function the_getHashIdFieldName_method_return_the_proper_hash_column_name() {
+    #[Test]
+    public function the_getHashIdFieldName_method_return_the_proper_hash_column_name()
+    {
 
-        $profile = new Profile;
+        $profile = new Profile();
         $this->assertEquals($profile->getHashIdFieldName(), 'hash');
 
-        $user = new User;
+        $user = new User();
         $this->assertEquals($user->getHashIdFieldName(), 'hash_id');
     }
 
@@ -91,12 +131,14 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function the_canHaveHashId_method_can_check_if_hash_id_applicable() {
+    #[Test]
+    public function the_canHaveHashId_method_can_check_if_hash_id_applicable()
+    {
 
-        $profile = new Profile;
+        $profile = new Profile();
         $this->assertTrue($profile->canHaveHashId());
 
-        $user = new User;
+        $user = new User();
         $this->assertTrue($user->canHaveHashId());
     }
 
@@ -104,7 +146,9 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function the_getOriginalIdFromHashId_return_original_id_by_deahshing_hashid() {
+    #[Test]
+    public function the_getOriginalIdFromHashId_return_original_id_by_deahshing_hashid()
+    {
 
         $profile = Profile::create(['first_name' => 'first', 'last_name' => 'last']);
         $this->assertEquals($profile->getOriginalIdFromHashId(), $profile->id);
@@ -118,11 +162,13 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function the_findByHashId_can_find_a_model_record() {
+    #[Test]
+    public function the_findByHashId_can_find_a_model_record()
+    {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
         $hash = $user->getHashId();
-        
+
         $this->assertEquals(User::findByHashId($hash)->id, $user->id);
 
         $user1 = User::create(['email' => 'mail1@m.test', 'password' => '123']);
@@ -136,7 +182,9 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function it_can_query_model_using_byHashId_local_scope() {
+    #[Test]
+    public function it_can_query_model_using_byHashId_local_scope()
+    {
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
 
@@ -159,12 +207,14 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function the_specific_model_hash_id_generation_can_be_disabled_globally() {
+    #[Test]
+    public function the_specific_model_hash_id_generation_can_be_disabled_globally()
+    {
 
         User::disbaleHashIdGeneration();
 
         $user = User::create(['email' => 'mail@m.test', 'password' => '123']);
-        
+
         $this->assertNull($user->getHashId());
     }
 
@@ -172,7 +222,9 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function the_specific_model_hash_id_generation_disabling_will_not_impact_other_model() {
+    #[Test]
+    public function the_specific_model_hash_id_generation_disabling_will_not_impact_other_model()
+    {
 
         User::disbaleHashIdGeneration();
 
@@ -187,7 +239,9 @@ class ModelTraitTest extends TestCase {
     /**
      * @test
      */
-    public function the_specific_model_hash_id_disabled_generation_can_be_enabled() {
+    #[Test]
+    public function the_specific_model_hash_id_disabled_generation_can_be_enabled()
+    {
 
         User::disbaleHashIdGeneration();
 

@@ -2,17 +2,15 @@
 
 namespace Touhidurabir\ModelHashid\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Orchestra\Testbench\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Illuminate\Support\Collection;
 use Touhidurabir\ModelHashid\Tests\App\User;
-use Touhidurabir\ModelHashid\Tests\App\Profile;
 use Touhidurabir\ModelHashid\Console\RegenerateModelHashid;
-use Touhidurabir\ModelHashid\Jobs\ModelHashidRegeneratorJob;
 use Touhidurabir\ModelHashid\Tests\Traits\LaravelTestBootstrapping;
 
-class RegenerationCommandTest extends TestCase {
-
+class RegenerationCommandTest extends TestCase
+{
     use LaravelTestBootstrapping;
 
     /**
@@ -28,10 +26,11 @@ class RegenerationCommandTest extends TestCase {
      *
      * @return void
      */
-    protected function defineDatabaseMigrations() {
+    protected function defineDatabaseMigrations()
+    {
 
         $this->loadMigrationsFrom(__DIR__ . '/App/database/migrations');
-        
+
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
 
         $this->beforeApplicationDestroyed(function () {
@@ -45,7 +44,10 @@ class RegenerationCommandTest extends TestCase {
      *
      * @return void
      */
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
+
+        $this->resetHashIdGeneration();
 
         parent::setUp();
 
@@ -53,9 +55,24 @@ class RegenerationCommandTest extends TestCase {
     }
 
 
-    protected function configureTestCommand() {
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
 
-        $command = new RegenerateModelHashid;
+        $this->resetHashIdGeneration();
+
+        parent::tearDown();
+    }
+
+
+    protected function configureTestCommand()
+    {
+
+        $command = new RegenerateModelHashid();
         $command->setLaravel($this->app);
 
         $this->regenerationCommand = new CommandTester($command);
@@ -65,7 +82,9 @@ class RegenerationCommandTest extends TestCase {
     /**
      * @test
      */
-    public function the_command_will_run() {
+    #[Test]
+    public function the_command_will_run()
+    {
 
         $status = $this->regenerationCommand->execute([
             'models' => 'Touhidurabir\\ModelHashid\\Tests\\App\\User,Touhidurabir\\ModelHashid\\Tests\\App\\Profile',
@@ -85,7 +104,9 @@ class RegenerationCommandTest extends TestCase {
     /**
      * @test
      */
-    public function the_command_will_fail_given_wrong() {
+    #[Test]
+    public function the_command_will_fail_given_wrong()
+    {
 
         $status = $this->regenerationCommand->execute([
             'models' => 'Touhidurabir\\ModelHashid\\Tests\\App\\Testing,',
@@ -97,35 +118,41 @@ class RegenerationCommandTest extends TestCase {
     /**
      * @test
      */
-    public function the_command_will_run_properly_with_provided_job() {
+    #[Test]
+    public function the_command_will_run_properly_with_provided_job()
+    {
 
         $status = $this->regenerationCommand->execute([
             'models' => 'Touhidurabir\\ModelHashid\\Tests\\App\\User,Touhidurabir\\ModelHashid\\Tests\\App\\Profile',
             '--job'  => 'Touhidurabir\\ModelHashid\\Jobs\\ModelHashidRegeneratorJob'
         ]);
 
-        $this->assertEquals($status, 0);        
+        $this->assertEquals($status, 0);
     }
 
 
     /**
      * @test
      */
-    public function the_command_will_fail_given_wrong_job() {
+    #[Test]
+    public function the_command_will_fail_given_wrong_job()
+    {
 
         $status = $this->regenerationCommand->execute([
             'models' => 'Touhidurabir\\ModelHashid\\Tests\\App\\User,Touhidurabir\\ModelHashid\\Tests\\App\\Profile',
             '--job'  => 'Touhidurabir\\ModelHashid\\NonExistingJob'
         ]);
 
-        $this->assertEquals($status, 1);        
+        $this->assertEquals($status, 1);
     }
 
 
     /**
      * @test
      */
-    public function the_command_will_run_set_proper_hash_id_for_missing_rows() {
+    #[Test]
+    public function the_command_will_run_set_proper_hash_id_for_missing_rows()
+    {
 
         User::disbaleHashIdGeneration();
 
@@ -142,6 +169,24 @@ class RegenerationCommandTest extends TestCase {
         $user->refresh();
 
         $this->assertNotNull($user->getHashId());
+    }
+
+
+    /**
+     * @test
+     */
+    #[Test]
+    public function the_command_handle_returns_an_explicit_success_code()
+    {
+
+        $command = new RegenerateModelHashid();
+        $command->setLaravel($this->app);
+
+        (new CommandTester($command))->execute([
+            'models' => 'Touhidurabir\\ModelHashid\\Tests\\App\\User',
+        ]);
+
+        $this->assertSame(0, $command->handle());
     }
 
 }
